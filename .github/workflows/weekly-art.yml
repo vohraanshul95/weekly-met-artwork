@@ -1,0 +1,24 @@
+name: Weekly Met Artwork
+
+on:
+  schedule:
+    - cron: '0 9 * * 1' # every Monday at 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: node index.js
+      # Commit the generated HTML back to the repo
+      - name: Commit HTML
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add index.html
+          git commit -m "Update artwork HTML [skip ci]" || echo "No changes to commit"
+          git push
