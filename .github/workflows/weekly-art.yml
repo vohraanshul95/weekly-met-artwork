@@ -2,8 +2,8 @@ name: Weekly Met Artwork
 
 on:
   schedule:
-    - cron: '0 9 * * 1' # every Monday at 09:00 UTC
-  workflow_dispatch: # allows manual trigger
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
 
 jobs:
   run:
@@ -11,15 +11,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Step 1: List all files to verify structure
       - name: List all files
         run: ls -R
 
-      # Step 2: Setup Node
       - uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # Step 3: Run your script
       - name: Run index.js
         run: node index.js
+        working-directory: ${{ github.workspace }}
